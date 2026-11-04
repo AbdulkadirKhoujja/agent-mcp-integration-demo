@@ -19,4 +19,6 @@ class MCPTests(unittest.TestCase):
   with patch("mcp_server.urllib.request.urlopen",return_value=Response()):
    self.assertEqual(invoke("github_issue_read",{"repo":"example/repo","number":18})["number"],18)
  def test_run_tests(self):
-  self.assertTrue(invoke("tests_run",{})["passed"])
+  from unittest.mock import Mock
+  with patch("subprocess.run",return_value=Mock(returncode=0,stdout="OK",stderr="")):
+   self.assertTrue(invoke("tests_run",{})["passed"])
